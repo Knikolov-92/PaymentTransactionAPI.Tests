@@ -25,7 +25,7 @@ namespace PaymentTransactionAPI.Tests.Steps
         {
             _response = TransactionOperations.SendRequestToCheckTransactionServiceIsRunning();
 
-            Assert.That(_response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            BaseOperations.ValidateResponseStatusCode(_response, HttpStatusCode.OK);
         }
 
         [Then("^on POST request with valid payment transaction to /payment_transactions status code 200 is returned$")]
@@ -49,7 +49,7 @@ namespace PaymentTransactionAPI.Tests.Steps
 
             _response = TransactionOperations.SendRequestToCreatePaymentTransaction(transaction);
 
-            Assert.That(_response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            BaseOperations.ValidateResponseStatusCode(_response, HttpStatusCode.OK);
 
             var json = JObject.Parse(_response.Content);
             string refNumber = json.GetValue("unique_id").ToString().Trim();
