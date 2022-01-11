@@ -5,6 +5,11 @@ namespace PaymentTransactionAPI.Tests.TestInfrastructure.Extensions
 {
     public static class EnumExtensions
     {
+        /// <summary>
+        /// Returns string, placed in the 'Description' attribute of enum members
+        /// </summary>
+        /// <param name="val"></param>
+        /// <returns></returns>
         public static string ToDetailedString(this TransactionTypeEnum val)
         {
             return ToDetailedString((object)val);
