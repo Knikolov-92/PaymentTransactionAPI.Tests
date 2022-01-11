@@ -59,7 +59,38 @@ namespace PaymentTransactionAPI.Tests.Steps
         [Then("^on POST request with valid void transaction to /payment_transactions status code 200 is returned$")]
         public void ThenOnPostRequestWithValidVoidTransaction_StatusCode200IsReturned()
         {
+            var transaction = new PaymentTransaction
+            {
+                PaymentTransactionObject = new SaleTransactionBody
+                {
+                    CardNumber = RandomUtility.GenerateRandomValidCardNumber(),
+                    Cvv = RandomUtility.GenerateRandomStringNumber(3),
+                    ExpirationDate = RandomUtility.GenerateRandomCardExpirationDate(),
+                    Amount = RandomNumber.Next(100, 99999).ToString(),
+                    Usage = Lorem.GetFirstWord(),
+                    TransactionType = TransactionTypeEnum.Sale.ToDetailedString(),
+                    CardHolder = Name.FullName(),
+                    Email = Internet.Email(),
+                    Address = $"{Address.Country()}, {Address.City()}, {Address.StreetName()}"
+                }
+            };
 
+            _response = TransactionOperations.SendRequestToCreatePaymentTransaction(transaction);
+
+            var voidTransaction = new PaymentTransaction()
+            {
+                PaymentTransactionObject = new VoidTransactionBody()
+                {
+                    ReferenceId = BaseOperations.GetJsonKeyFromResponse(_response, "unique_id"),
+                    TransactionType = TransactionTypeEnum.Void.ToDetailedString()
+                }
+            };
+
+            _response = TransactionOperations.SendRequestToCreateVoidTransaction(voidTransaction);
+
+            BaseOperations.ValidateResponseStatusCode(_response, HttpStatusCode.OK);
+
+            TransactionOperations.ValidateVoidTransactionIsApproved(_response);
         }
 
         [Then("^on POST request with valid transaction and invalid authentication to /payment_transactions status code 200 is returned$")]

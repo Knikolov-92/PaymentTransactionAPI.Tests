@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Newtonsoft.Json.Linq;
+using NUnit.Framework;
 using PaymentTransactionAPI.Tests.TestInfrastructure.Managers;
 using RestSharp;
 using System;
@@ -21,6 +22,13 @@ namespace PaymentTransactionAPI.Tests.Operations
         public static void ValidateResponseStatusCode(IRestResponse response, HttpStatusCode expectedStatusCode)
         {
             Assert.That(response.StatusCode, Is.EqualTo(expectedStatusCode));
+        }
+
+        public static string GetJsonKeyFromResponse(IRestResponse response, string key)
+        {
+            var json = JObject.Parse(response.Content);
+
+            return json.GetValue(key).ToString();
         }
     }
 }

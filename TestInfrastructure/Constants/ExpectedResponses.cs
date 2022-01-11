@@ -10,6 +10,8 @@ namespace PaymentTransactionAPI.Tests.TestInfrastructure.Constants
 
         public const string PAYMENT_TRANSACTION_APPROVED_MESSAGE = "Your transaction has been approved.";
 
+        public const string VOID_TRANSACTION_APPROVED_MESSAGE = "Your transaction has been voided successfully";
+
         public const int PAYMENT_TRANSACTION_REFERENCE_ID_LENGTH = 32;
     }
 }

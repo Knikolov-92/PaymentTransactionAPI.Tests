@@ -27,20 +27,45 @@ namespace PaymentTransactionAPI.Tests.Operations
             request.AddJsonBody(body);
 
             return BaseOperations.SendRequest(request);
-        }        
+        }
+
+        public static IRestResponse SendRequestToCreateVoidTransaction(PaymentTransaction details)
+        {
+            IRestRequest request = new RestRequest(ApiManager.GetPaymentTransactionsEndpoint(), Method.POST);
+            string body = JsonConvert.SerializeObject(details);
+
+            request.AddHeader("Content-Type", "application/json;charset=UTF-8");
+            request.AddHeader("Authorization", ApiManager.GetAuthorizationHeader());
+            request.AddJsonBody(body);
+
+            return BaseOperations.SendRequest(request);
+        }
 
         public static void ValidateSaleTransactionIsApproved(IRestResponse response)
         {
-            var json = JObject.Parse(response.Content);
-            string refNumber = json.GetValue("unique_id").ToString();
-            string status = json.GetValue("status").ToString();
-            string message = json.GetValue("message").ToString();
+            string refNumber = BaseOperations.GetJsonKeyFromResponse(response, "unique_id");
+            string status = BaseOperations.GetJsonKeyFromResponse(response, "status");
+            string message = BaseOperations.GetJsonKeyFromResponse(response, "message");
 
             Assert.Multiple(() =>
             {
                 Assert.That(refNumber.Length, Is.EqualTo(ExpectedResponses.PAYMENT_TRANSACTION_REFERENCE_ID_LENGTH));
                 Assert.That(status, Is.EqualTo(ExpectedResponses.PAYMENT_TRANSACTION_APPROVED_STATUS));
                 Assert.That(message, Is.EqualTo(ExpectedResponses.PAYMENT_TRANSACTION_APPROVED_MESSAGE));
+            });
+        }
+
+        public static void ValidateVoidTransactionIsApproved(IRestResponse response)
+        {
+            string refNumber = BaseOperations.GetJsonKeyFromResponse(response, "unique_id");
+            string status = BaseOperations.GetJsonKeyFromResponse(response, "status");
+            string message = BaseOperations.GetJsonKeyFromResponse(response, "message");
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(refNumber.Length, Is.EqualTo(ExpectedResponses.PAYMENT_TRANSACTION_REFERENCE_ID_LENGTH));
+                Assert.That(status, Is.EqualTo(ExpectedResponses.PAYMENT_TRANSACTION_APPROVED_STATUS));
+                Assert.That(message, Is.EqualTo(ExpectedResponses.VOID_TRANSACTION_APPROVED_MESSAGE));
             });
         }
     }
