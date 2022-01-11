@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using PaymentTransactionAPI.Tests.TestInfrastructure.Constants;
 using PaymentTransactionAPI.Tests.TestInfrastructure.Managers;

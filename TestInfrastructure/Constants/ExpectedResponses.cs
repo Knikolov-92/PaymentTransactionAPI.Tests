@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace PaymentTransactionAPI.Tests.TestInfrastructure.Constants
 {
     public static class ExpectedResponses

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using Faker;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using NUnit.Framework;
 using PaymentTransactionAPI.Tests.Operations;
 using PaymentTransactionAPI.Tests.TestInfrastructure.Enums;
 using PaymentTransactionAPI.Tests.TestInfrastructure.Extensions;
 using PaymentTransactionAPI.Tests.TestInfrastructure.Helpers;
-using PaymentTransactionAPI.Tests.TestInfrastructure.Managers;
 using PaymentTransactionAPI.Tests.TestInfrastructure.Models;
 using RestSharp;
 using TechTalk.SpecFlow;
@@ -17,9 +12,7 @@ namespace PaymentTransactionAPI.Tests.Steps
 {
     [Binding]
     public sealed class PaymentTransactionStepDefinitions
-    {        
-        private IRestClient? _client;
-        private IRestRequest? _request;
+    {
         private IRestResponse? _response;
 
         [Given("^existing Payment Transaction application$")]
