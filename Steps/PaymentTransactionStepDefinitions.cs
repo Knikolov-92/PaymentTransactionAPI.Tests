@@ -139,7 +139,53 @@ namespace PaymentTransactionAPI.Tests.Steps
         [Then("^on POST request with void transaction pointing to an existing void transaction to /payment_transactions status code 422 is returned$")]
         public void ThenOnPostRequestWithVoidTransactionPointingToExistingVoidTransaction_StatusCode422IsReturned()
         {
+            var transaction = new PaymentTransaction
+            {
+                PaymentTransactionObject = new SaleTransactionBody
+                {
+                    CardNumber = RandomUtility.GenerateRandomValidCardNumber(),
+                    Cvv = RandomUtility.GenerateRandomStringNumber(3),
+                    ExpirationDate = RandomUtility.GenerateRandomCardExpirationDate(),
+                    Amount = RandomNumber.Next(100, 99999).ToString(),
+                    Usage = Lorem.GetFirstWord(),
+                    TransactionType = TransactionTypeEnum.Sale.ToDetailedString(),
+                    CardHolder = Name.FullName(),
+                    Email = Internet.Email(),
+                    Address = $"{Address.Country()}, {Address.City()}, {Address.StreetName()}"
+                }
+            };
 
+            _response = TransactionOperations.SendRequestToCreatePaymentTransaction(transaction);
+
+            var voidTransactionOne = new PaymentTransaction()
+            {
+                PaymentTransactionObject = new VoidTransactionBody()
+                {
+                    ReferenceId = BaseOperations.GetJsonKeyFromResponse(_response, "unique_id"),
+                    TransactionType = TransactionTypeEnum.Void.ToDetailedString()
+                }
+            };
+
+            _response = TransactionOperations.SendRequestToCreateVoidTransaction(voidTransactionOne);
+
+            BaseOperations.ValidateResponseStatusCode(_response, HttpStatusCode.OK);
+
+            TransactionOperations.ValidateVoidTransactionIsApproved(_response);
+
+            var voidTransactionTwo = new PaymentTransaction()
+            {
+                PaymentTransactionObject = new VoidTransactionBody()
+                {
+                    ReferenceId = BaseOperations.GetJsonKeyFromResponse(_response, "unique_id"),
+                    TransactionType = TransactionTypeEnum.Void.ToDetailedString()
+                }
+            };
+
+            _response = TransactionOperations.SendRequestToCreateVoidTransaction(voidTransactionTwo);
+
+            BaseOperations.ValidateResponseStatusCode(_response, HttpStatusCode.UnprocessableEntity);
+
+            TransactionOperations.ValidateVoidTransactionIsInvalid(_response);
         }
     }
 }

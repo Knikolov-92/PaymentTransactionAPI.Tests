@@ -197,12 +197,12 @@ namespace PaymentTransactionAPI.Tests.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("void transaction pointing to a non-existent payment transaction")]
-        public virtual void VoidTransactionPointingToANon_ExistentPaymentTransaction()
+        [NUnit.Framework.DescriptionAttribute("void transaction pointing to a non-existing payment transaction")]
+        public virtual void VoidTransactionPointingToANon_ExistingPaymentTransaction()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("void transaction pointing to a non-existent payment transaction", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("void transaction pointing to a non-existing payment transaction", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 24
  this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -235,12 +235,12 @@ namespace PaymentTransactionAPI.Tests.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("void transaction pointing to an existent void transaction")]
-        public virtual void VoidTransactionPointingToAnExistentVoidTransaction()
+        [NUnit.Framework.DescriptionAttribute("void transaction pointing to an existing void transaction")]
+        public virtual void VoidTransactionPointingToAnExistingVoidTransaction()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("void transaction pointing to an existent void transaction", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("void transaction pointing to an existing void transaction", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 28
  this.ScenarioInitialize(scenarioInfo);
 #line hidden
