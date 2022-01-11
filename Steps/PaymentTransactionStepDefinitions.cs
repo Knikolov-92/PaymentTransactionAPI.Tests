@@ -96,7 +96,25 @@ namespace PaymentTransactionAPI.Tests.Steps
         [Then("^on POST request with valid transaction and invalid authentication to /payment_transactions status code 200 is returned$")]
         public void ThenOnPostRequestWithValidTransactionAndInvalidAuthentication_StatusCode200IsReturned()
         {
+            var transaction = new PaymentTransaction
+            {
+                PaymentTransactionObject = new SaleTransactionBody
+                {
+                    CardNumber = RandomUtility.GenerateRandomValidCardNumber(),
+                    Cvv = RandomUtility.GenerateRandomStringNumber(3),
+                    ExpirationDate = RandomUtility.GenerateRandomCardExpirationDate(),
+                    Amount = RandomNumber.Next(100, 99999).ToString(),
+                    Usage = Lorem.GetFirstWord(),
+                    TransactionType = TransactionTypeEnum.Sale.ToDetailedString(),
+                    CardHolder = Name.FullName(),
+                    Email = Internet.Email(),
+                    Address = $"{Address.Country()}, {Address.City()}, {Address.StreetName()}"
+                }
+            };
 
+            _response = TransactionOperations.SendRequestToCreatePaymentTransactionWithInvalidAuthorization(transaction);
+
+            BaseOperations.ValidateResponseStatusCode(_response, HttpStatusCode.Unauthorized);
         }
 
         [Then("^on POST request with void transaction pointing to a non-existing payment transaction to /payment_transactions status code 422 is returned$")]

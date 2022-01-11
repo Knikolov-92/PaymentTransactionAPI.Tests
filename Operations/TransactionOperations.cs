@@ -10,6 +10,9 @@ namespace PaymentTransactionAPI.Tests.Operations
 {
     public static class TransactionOperations
     {
+        //=====================
+        //Request Operations
+        //=====================
         public static IRestResponse SendRequestToCheckTransactionServiceIsRunning()
         {
             IRestRequest request = new RestRequest(ApiManager.GetRootEndpoint(), Method.GET);
@@ -41,6 +44,21 @@ namespace PaymentTransactionAPI.Tests.Operations
             return BaseOperations.SendRequest(request);
         }
 
+        public static IRestResponse SendRequestToCreatePaymentTransactionWithInvalidAuthorization(PaymentTransaction details)
+        {
+            IRestRequest request = new RestRequest(ApiManager.GetPaymentTransactionsEndpoint(), Method.POST);
+            string body = JsonConvert.SerializeObject(details);
+
+            request.AddHeader("Content-Type", "application/json;charset=UTF-8");
+            request.AddHeader("Authorization", "invalid");
+            request.AddJsonBody(body);
+
+            return BaseOperations.SendRequest(request);
+        }
+
+        //=====================
+        //Assert Operations
+        //=====================
         public static void ValidateSaleTransactionIsApproved(IRestResponse response)
         {
             string refNumber = BaseOperations.GetJsonKeyFromResponse(response, "unique_id");
