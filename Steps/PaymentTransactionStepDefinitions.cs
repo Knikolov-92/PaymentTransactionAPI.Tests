@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Net;
+using NUnit.Framework;
+using PaymentTransactionAPI.Tests.TestInfrastructure.Managers;
 using RestSharp;
 using TechTalk.SpecFlow;
 
@@ -14,7 +17,15 @@ namespace PaymentTransactionAPI.Tests.Steps
         [Given("^existing Payment Transaction application$")]
         public void GivenExistingPaymentTransactionApplication()
         {
-            
+            _client = new RestClient()
+            {
+                BaseUrl = new Uri(ApiManager.GetBaseUrl())
+            };
+
+            _request = new RestRequest(ApiManager.GetRootEndpoint(), Method.GET);
+            _response = _client.Execute(_request);
+
+            Assert.That(_response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
         [Then("^on POST request with valid payment transaction to /payment_transactions status code 200 is returned$")]
