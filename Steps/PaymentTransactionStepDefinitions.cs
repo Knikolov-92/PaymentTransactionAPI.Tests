@@ -3,6 +3,8 @@ using System.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using PaymentTransactionAPI.Tests.TestInfrastructure.Enums;
+using PaymentTransactionAPI.Tests.TestInfrastructure.Extensions;
 using PaymentTransactionAPI.Tests.TestInfrastructure.Managers;
 using PaymentTransactionAPI.Tests.TestInfrastructure.Models;
 using RestSharp;
@@ -47,7 +49,7 @@ namespace PaymentTransactionAPI.Tests.Steps
                     ExpirationDate = "01/2023",
                     Amount = "1000",
                     Usage = "Tax",
-                    TransactionType = "sale",
+                    TransactionType = TransactionTypeEnum.Sale.ToDetailedString(),
                     CardHolder = "Ivancho",
                     Email = "ivancho@isthebest.com",
                     Address = "Ivanolandia, Ivanov street 123"
@@ -58,14 +60,15 @@ namespace PaymentTransactionAPI.Tests.Steps
             _request.AddJsonBody(body);
             _response = _client.Execute(_request);
 
+            Assert.That(_response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+
             var json = JObject.Parse(_response.Content);
             string refNumber = json.GetValue("unique_id").ToString().Trim();
             string status = json.GetValue("status").ToString().Trim();
             string message = json.GetValue("message").ToString().Trim();
 
             Assert.Multiple(() =>
-            {
-                Assert.That(_response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            {                
                 Assert.That(refNumber.Length, Is.EqualTo(32));
                 Assert.That(status, Is.EqualTo("approved"));
                 Assert.That(message, Is.EqualTo("Your transaction has been approved."));
