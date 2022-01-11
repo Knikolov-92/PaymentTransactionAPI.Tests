@@ -40,7 +40,7 @@ namespace PaymentTransactionAPI.Tests.Steps
 
             var transaction = new PaymentTransaction
             {
-                PaymentTransactionObject = new PaymentTransactionBody()
+                PaymentTransactionObject = new SaleTransactionBody()
                 {
                     CardNumber = "4200000000000000",
                     Cvv = "123",

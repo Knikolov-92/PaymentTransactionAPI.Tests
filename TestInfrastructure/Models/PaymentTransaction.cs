@@ -5,10 +5,10 @@ namespace PaymentTransactionAPI.Tests.TestInfrastructure.Models
     public class PaymentTransaction
     {
         [JsonProperty("payment_transaction", NullValueHandling = NullValueHandling.Ignore)]
-        public PaymentTransactionBody? PaymentTransactionObject { get; set; }
+        public object? PaymentTransactionObject { get; set; }
     }
 
-    public class PaymentTransactionBody
+    public class SaleTransactionBody
     {
         [JsonProperty("card_number", NullValueHandling = NullValueHandling.Include)]
         public string? CardNumber { get; set; }
@@ -36,5 +36,14 @@ namespace PaymentTransactionAPI.Tests.TestInfrastructure.Models
 
         [JsonProperty("address", NullValueHandling = NullValueHandling.Include)]
         public string? Address { get; set; }
+    }
+
+    public class VoidTransactionBody
+    {
+        [JsonProperty("reference_id", NullValueHandling = NullValueHandling.Include)]
+        public string? ReferenceId { get; set; }
+
+        [JsonProperty("transaction_type", NullValueHandling = NullValueHandling.Include)]
+        public string? TransactionType { get; set; }
     }
 }
