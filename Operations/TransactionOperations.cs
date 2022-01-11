@@ -92,5 +92,19 @@ namespace PaymentTransactionAPI.Tests.Operations
 
             Assert.That(refId.Contains(ExpectedResponses.VOID_TRANSACTION_INVALID_MESSAGE));
         }
+
+        public static void ValidateSaleTransactionIsDeclined(IRestResponse response)
+        {
+            string refNumber = BaseOperations.GetJsonKeyFromResponse(response, "unique_id");
+            string status = BaseOperations.GetJsonKeyFromResponse(response, "status");
+            string message = BaseOperations.GetJsonKeyFromResponse(response, "message");
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(refNumber.Length, Is.EqualTo(ExpectedResponses.PAYMENT_TRANSACTION_REFERENCE_ID_LENGTH));
+                Assert.That(status, Is.EqualTo(ExpectedResponses.PAYMENT_TRANSACTION_DECLINED_STATUS));
+                Assert.That(message, Is.EqualTo(ExpectedResponses.PAYMENT_TRANSACTION_DECLINED_MESSAGE));
+            });
+        }
     }
 }

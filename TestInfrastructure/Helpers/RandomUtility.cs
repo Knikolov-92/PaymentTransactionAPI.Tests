@@ -36,5 +36,10 @@ namespace PaymentTransactionAPI.Tests.TestInfrastructure.Helpers
         {
             return "4200000000000000";
         }
+
+        public static string GenerateRandomInvalidCardNumber()
+        {
+            return "420000" + GenerateRandomStringNumber(10);
+        }
     }
 }

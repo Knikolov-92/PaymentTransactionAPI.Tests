@@ -180,5 +180,31 @@ namespace PaymentTransactionAPI.Tests.Steps
 
             TransactionOperations.ValidateVoidTransactionIsInvalid(_response);
         }
+
+        [Then("^on POST request to /payment_transactions with invalid card_number status code 200 is returned$")]
+        public void ThenOnPostRequestWithInvalidCardNumber_StatusCode200IsReturned()
+        {
+            var transaction = new PaymentTransaction
+            {
+                PaymentTransactionObject = new SaleTransactionBody
+                {
+                    CardNumber = RandomUtility.GenerateRandomInvalidCardNumber(),
+                    Cvv = RandomUtility.GenerateRandomStringNumber(3),
+                    ExpirationDate = RandomUtility.GenerateRandomCardExpirationDate(),
+                    Amount = RandomNumber.Next(100, 99999).ToString(),
+                    Usage = Lorem.GetFirstWord(),
+                    TransactionType = TransactionTypeEnum.Sale.ToDetailedString(),
+                    CardHolder = Name.FullName(),
+                    Email = Internet.Email(),
+                    Address = $"{Address.Country()}, {Address.City()}, {Address.StreetName()}"
+                }
+            };
+
+            _response = TransactionOperations.SendRequestToCreatePaymentTransaction(transaction);
+
+            BaseOperations.ValidateResponseStatusCode(_response, HttpStatusCode.OK);
+
+            TransactionOperations.ValidateSaleTransactionIsDeclined(_response);
+        }
     }
 }
