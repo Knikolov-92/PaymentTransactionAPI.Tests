@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Folder Include="TestInfrastructure\Constants\" />
+    <Folder Include="TestInfrastructure\Models\" />
   </ItemGroup>
 	
 	<Target Name="CopyConfigFile" AfterTargets="AfterBuild">
