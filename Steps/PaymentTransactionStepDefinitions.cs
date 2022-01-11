@@ -1,20 +1,26 @@
-﻿using TechTalk.SpecFlow;
+﻿using System;
+using RestSharp;
+using TechTalk.SpecFlow;
 
 namespace PaymentTransactionAPI.Tests.Steps
 {
     [Binding]
     public sealed class PaymentTransactionStepDefinitions
-    {
+    {        
+        private IRestClient? _client;
+        private IRestRequest? _request;
+        private IRestResponse? _response;
+
         [Given("^existing Payment Transaction application$")]
         public void GivenExistingPaymentTransactionApplication()
         {
-           
+            
         }
 
         [Then("^on POST request with valid payment transaction to /payment_transactions status code 200 is returned$")]
         public void ThenOnPostRequestWithValidPaymentTransaction_StatusCode200IsReturned()
         {
-            
+           
         }
 
         [Then("^on POST request with valid void transaction to /payment_transactions status code 200 is returned$")]
