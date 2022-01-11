@@ -86,5 +86,12 @@ namespace PaymentTransactionAPI.Tests.Operations
                 Assert.That(message, Is.EqualTo(ExpectedResponses.VOID_TRANSACTION_APPROVED_MESSAGE));
             });
         }
+
+        public static void ValidateVoidTransactionIsInvalid(IRestResponse response)
+        {
+            string refId = BaseOperations.GetJsonKeyFromResponse(response, "reference_id");
+
+            Assert.That(refId.Contains(ExpectedResponses.VOID_TRANSACTION_INVALID_MESSAGE));
+        }
     }
 }

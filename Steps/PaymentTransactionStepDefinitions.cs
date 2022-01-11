@@ -120,7 +120,20 @@ namespace PaymentTransactionAPI.Tests.Steps
         [Then("^on POST request with void transaction pointing to a non-existing payment transaction to /payment_transactions status code 422 is returned$")]
         public void ThenOnPostRequestWithVoidTransactionPointingToNonExistingPaymentTransaction_StatusCode422IsReturned()
         {
+            var voidTransaction = new PaymentTransaction()
+            {
+                PaymentTransactionObject = new VoidTransactionBody()
+                {
+                    ReferenceId = RandomUtility.GenerateRandomStringNumber(32),
+                    TransactionType = TransactionTypeEnum.Void.ToDetailedString()
+                }
+            };
 
+            _response = TransactionOperations.SendRequestToCreateVoidTransaction(voidTransaction);
+
+            BaseOperations.ValidateResponseStatusCode(_response, HttpStatusCode.UnprocessableEntity);
+
+            TransactionOperations.ValidateVoidTransactionIsInvalid(_response);
         }
 
         [Then("^on POST request with void transaction pointing to an existing void transaction to /payment_transactions status code 422 is returned$")]
