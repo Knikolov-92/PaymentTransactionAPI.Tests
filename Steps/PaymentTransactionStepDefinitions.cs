@@ -33,7 +33,7 @@ namespace PaymentTransactionAPI.Tests.Steps
         {
             var transaction = new PaymentTransaction
             {
-                PaymentTransactionObject = new SaleTransactionBody()
+                PaymentTransactionObject = new SaleTransactionBody
                 {
                     CardNumber = "4200000000000000",
                     Cvv = "123",
@@ -51,17 +51,7 @@ namespace PaymentTransactionAPI.Tests.Steps
 
             BaseOperations.ValidateResponseStatusCode(_response, HttpStatusCode.OK);
 
-            var json = JObject.Parse(_response.Content);
-            string refNumber = json.GetValue("unique_id").ToString().Trim();
-            string status = json.GetValue("status").ToString().Trim();
-            string message = json.GetValue("message").ToString().Trim();
-
-            Assert.Multiple(() =>
-            {                
-                Assert.That(refNumber.Length, Is.EqualTo(32));
-                Assert.That(status, Is.EqualTo("approved"));
-                Assert.That(message, Is.EqualTo("Your transaction has been approved."));
-            });
+            TransactionOperations.ValidateSaleTransactionIsApproved(_response);
         }
 
         [Then("^on POST request with valid void transaction to /payment_transactions status code 200 is returned$")]
