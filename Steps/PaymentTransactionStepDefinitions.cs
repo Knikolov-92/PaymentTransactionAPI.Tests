@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Net;
+using Faker;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using PaymentTransactionAPI.Tests.Operations;
 using PaymentTransactionAPI.Tests.TestInfrastructure.Enums;
 using PaymentTransactionAPI.Tests.TestInfrastructure.Extensions;
+using PaymentTransactionAPI.Tests.TestInfrastructure.Helpers;
 using PaymentTransactionAPI.Tests.TestInfrastructure.Managers;
 using PaymentTransactionAPI.Tests.TestInfrastructure.Models;
 using RestSharp;
@@ -35,15 +37,15 @@ namespace PaymentTransactionAPI.Tests.Steps
             {
                 PaymentTransactionObject = new SaleTransactionBody
                 {
-                    CardNumber = "4200000000000000",
-                    Cvv = "123",
-                    ExpirationDate = "01/2023",
-                    Amount = "1000",
-                    Usage = "Tax",
+                    CardNumber = RandomUtility.GenerateRandomValidCardNumber(),
+                    Cvv = RandomUtility.GenerateRandomStringNumber(3),
+                    ExpirationDate = RandomUtility.GenerateRandomCardExpirationDate(),
+                    Amount = RandomNumber.Next(100, 99999).ToString(),
+                    Usage = Lorem.GetFirstWord(),
                     TransactionType = TransactionTypeEnum.Sale.ToDetailedString(),
-                    CardHolder = "Ivancho",
-                    Email = "ivancho@isthebest.com",
-                    Address = "Ivanolandia, Ivanov street 123"
+                    CardHolder = Name.FullName(),
+                    Email = Internet.Email(),
+                    Address = $"{Address.Country()}, {Address.City()}, {Address.StreetName()}"
                 }
             };
 
